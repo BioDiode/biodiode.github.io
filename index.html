@@ -33,6 +33,11 @@
             location.assign(sechost) // Jump to SECURE HOST
         }
 
+        // Clear localStorage on page reload
+        window.addEventListener('beforeunload', function() {
+            localStorage.clear();
+        });
+
         function getUrlParameter(name) {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
             var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
