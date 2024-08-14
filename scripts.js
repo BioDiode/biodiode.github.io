@@ -101,7 +101,7 @@ function selectSats() {
 //--- App Options ---
 var cdate_ts = Date.now() // Current timestamp starts with NOW
 const appopt = {
-  searchmask: 'astrocast,spacebee',
+  searchmask: 'spacebee',
   puksize: 0.03, // rel to Earth (0.01: 60km!)
   earthcircle: 900, // 600km->1 Rad
   expfspeed: 2, // Exponentional Fspeed 
@@ -109,6 +109,13 @@ const appopt = {
   propsec: 0, // 5500: ca 1 Cycle Propagation lenth in sec (if >0)
   showbackimg: true,
 }
+
+// Override default searchmask if provided in the URL
+const storedSearchmask = localStorage.getItem('searchmask');
+if (storedSearchmask) {
+  appopt.searchmask = storedSearchmask;
+}
+
 var appdgsearch;
 var appdgprop;
 var needsprop = false;
