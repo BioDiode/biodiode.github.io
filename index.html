@@ -32,6 +32,18 @@
             const sechost = 'https://' + location.hostname + location.pathname
             location.assign(sechost) // Jump to SECURE HOST
         }
+
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        var urlSearchmask = getUrlParameter('searchmask');
+        if (urlSearchmask) {
+            localStorage.setItem('searchmask', urlSearchmask);
+        }
     </script>
 </head>
 
