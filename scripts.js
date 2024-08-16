@@ -475,9 +475,41 @@ try {
       cdate_ts = Date.now() // Current timestamp starts with NOW
       last_ts = cdate_ts;
     }
-  }, 'now0').name("<button style='background: #555; color: #DDD;'> Use current Time </button>");
+  }, 'now0').name("<button style='background: #555; color: #DDD;'> Use Current Time </button>");
 
+  // Add custom date field with default set to the current date
+  appoptions.add(new function () {
+      const now = new Date();
+      this.customDate = now.toISOString().slice(0, 10);  // Default to today's date
+  }, 'customDate').name("Custom Date (YYYY-MM-DD)").onChange(function(value) {
+      this.customDate = value;
+  });
 
+  // Add custom time field with default set to the current time
+  appoptions.add(new function () {
+      const now = new Date();
+      this.customTime = now.toTimeString().slice(0, 8);  // Default to the current time
+  }, 'customTime').name("Custom Time (HH:MM:SS)").onChange(function(value) {
+      this.customTime = value;
+  });
+
+  // Button to apply the custom time
+  appoptions.add(new function () {
+      this.applyCustomTime = () => {
+          // Combine date and time input into a single datetime string
+          const customDateTime = `${this.customDate}T${this.customTime}Z`;
+          const customTime = new Date(customDateTime);
+
+          if (!isNaN(customTime)) {
+              cdate_ts = customTime.getTime();  // Update the global timestamp
+              last_ts = cdate_ts;  // Synchronize last_ts with the custom time
+              console.log(`Custom time set to: ${customTime.toUTCString()}`);
+          } else {
+              alert('Invalid date or time. Please enter valid values.');
+          }
+      }
+  }, 'applyCustomTime').name("<button style='background: #555; color: #DDD;'> Apply Custom Time </button>");
+  
   appoptions.add(appopt, 'expfspeed', -4, 4, 1).name("Speed Factor").onChange(setFspeed)
 
   appdgprop = appoptions.add(appopt, 'propsec', 0, 86400, 100).name("Prop.(sec)")
