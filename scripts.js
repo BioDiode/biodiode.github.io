@@ -496,19 +496,26 @@ try {
   // Button to apply the custom time
   appoptions.add(new function () {
       this.applyCustomTime = () => {
-          // Combine date and time input into a single datetime string
-          const customDateTime = `${this.customDate}T${this.customTime}Z`;
-          const customTime = new Date(customDateTime);
+          // Get the date and time inputs
+          const customDate = this.customDate; // Assumes YYYY-MM-DD format
+          const customTime = this.customTime; // Assumes HH:MM:SS format
 
-          if (!isNaN(customTime)) {
-              cdate_ts = customTime.getTime();  // Update the global timestamp
+          // Combine the date and time input into a single datetime string
+          const customDateTime = `${customDate}T${customTime}`;
+
+          // Parse the date-time string as a UTC date
+          const customTimeUTC = new Date(customDateTime + 'Z'); // Adding 'Z' for UTC
+
+          if (!isNaN(customTimeUTC)) {
+              cdate_ts = customTimeUTC.getTime();  // Update the global timestamp
               last_ts = cdate_ts;  // Synchronize last_ts with the custom time
-              console.log(`Custom time set to: ${customTime.toUTCString()}`);
+              console.log(`Custom time set to: ${customTimeUTC.toUTCString()}`);
           } else {
               alert('Invalid date or time. Please enter valid values.');
           }
-      }
+      };
   }, 'applyCustomTime').name("<button style='background: #555; color: #DDD;'> Apply Custom Time </button>");
+
   
   appoptions.add(appopt, 'expfspeed', -4, 4, 1).name("Speed Factor").onChange(setFspeed)
 
